@@ -1,46 +1,51 @@
-/*
-DOCUMENTACION
-https://pocketadmin.tech/en/puppeteer-generate-pdf/#range
-*/
-// TODO: Parsear la carpeta input y setear automatcamente las caracteristicas
-// de cada archivo en las options para que el output sea igual al input en html
 const puppeteer = require('puppeteer')
+const { showLogs } = require('../common/showLogs')
+
+const debug = false // when true shows logs and the actions in the browser
+const windowWidth = 1440
+const windowHeight = 900
 
 ;(async () => {
-  try {
-    const browser = await puppeteer.launch()
-    const page = await browser.newPage()
-    const inputPath = 'home/lam/Desktop/www/static_pages/curriculum_vitae/developer_cv/'
-    const filename = 'en_developer_cv.html'
-    const curriculumPDFOptions = {
-      format: 'Letter',
-    }
-/*
-    const inputPath = 'home/lam/Desktop/www/upwork/cotizacion/'
-    const filename = 'index.html'
-    const cotizacionPDFOptions = {
-      width: '39cm',
-      height: '22cm',
-      scale: 1,
-      preferCSSPageSize: false,
-    }
-*/
-    await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 2 })
+  // create browser
+  const browser = await puppeteer.launch({ headless: !debug, args: [`--window-size=${windowWidth},${windowHeight}`] })
+  const page = await browser.newPage()
+  await page.setViewport({ width: windowWidth, height: windowHeight, deviceScaleFactor: 2 })
 
-    await page.goto(`file:///${inputPath}${filename}`, {
-      waitUntil: 'networkidle2',
-    })
+  showLogs(page, debug)
 
-    await page.pdf({
-      ...curriculumPDFOptions,
-      //...cotizacionPDFOptions,
-      path: `./output/${filename}.pdf`,
-      printBackground: true,
-      // pageRanges: '1-3', // cantidad de paginas que se quiere en el output
-    })
-    await browser.close()
-  } catch (error) {
-    console.log(error)
-    await browser.close()
-  }
+  // const { inputPath, filename, options } = getQuotationData()
+  const { inputPath, filename, options } = getResumeData()
+
+  // Open file
+  await page.goto(`file:///${inputPath}${filename}`, { waitUntil: 'networkidle2' })
+
+  // Generate PDF
+  await page.pdf({
+    ...options,
+    path: `./output/${filename}.pdf`,
+  })
+
+  await browser.close()
 })()
+
+function getResumeData() {
+  const inputPath = __dirname + './../../static_pages/curriculum_vitae/developer_cv/'
+  const filename = 'en_developer_cv.html'
+  const options = { format: 'Letter', printBackground: true }
+
+  return { inputPath, filename, options }
+}
+
+function getQuotationData() {
+  const inputPath = __dirname + './../../upwork/cotizacion/'
+  const filename = 'index.html'
+  const options = {
+    width: '39cm',
+    height: '22cm',
+    scale: 1,
+    preferCSSPageSize: false,
+    // pageRanges: '1-3', // cantidad de paginas que se quiere en el output
+  }
+
+  return { inputPath, filename, options }
+}

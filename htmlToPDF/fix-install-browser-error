@@ -1,2 +1,0 @@
-To fix the "Error: Browser is not downloaded." You have to  manually install the chromiun browser with:
-node node_modules/puppeteer/install.js

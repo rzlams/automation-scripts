@@ -25,11 +25,11 @@ const windowHeight = 720
   await page.goto(parisUrl, { waitUntil: 'networkidle2' })
   console.log(`Page loaded: ${parisUrl}`)
 
-  const emailInput = await clearInput('.App-login input[name="email"]', { page })
+  const emailInput = await clearInput('.App-login input[name="email"]')
   await emailInput.type(parisEmail)
   console.log(`Email input value set: ${parisEmail}`)
 
-  const passwordInput = await clearInput('.App-login input[name="password"]', { page })
+  const passwordInput = await clearInput('.App-login input[name="password"]')
   await passwordInput.type(parisPassword)
   console.log(`Password input value set: ${parisPassword}`)
 
@@ -51,7 +51,7 @@ const windowHeight = 720
   const context = await browser.defaultBrowserContext()
   await context.overridePermissions(jwtDebuggerUrl, ['clipboard-read', 'clipboard-write'])
 
-  const jwtSecretInput = await clearInput('span#hmacsha-text + input[name="secret"]', { page })
+  const jwtSecretInput = await clearInput('span#hmacsha-text + input[name="secret"]')
   await jwtSecretInput.type(jwtSecret)
   console.log(`JWT secret value set: ${jwtSecret}`)
 

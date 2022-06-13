@@ -1,5 +1,5 @@
 module.exports = async (time) => {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, time)
-  })
+  return new Promise((resolve) => {
+    const id = setTimeout(() => resolve(id), time)
+  }).then(clearTimeout)
 }

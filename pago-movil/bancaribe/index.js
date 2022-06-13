@@ -1,33 +1,12 @@
-// const main = require('./fetchEmailFromGmail')
-// main().catch((e) => {
-//   console.error(e)
-//   throw e
-// })
-
-// TODO: agregar README.md con installation, gmail setup and usage
-function validateAmount(formattedAmount, fractionSeparator, decimalsLength) {
-  if (!formattedAmount) throw new Error(`Invalid amount - No falsy values allowed`)
-  if (formattedAmount.indexOf('.') >= 0) throw new Error(`Invalid amount - No dot allowed`)
-  if (formattedAmount.indexOf(fractionSeparator) < 0) throw new Error(`Invalid amount - Decimals required`)
-
-  const decimals = formattedAmount.split(fractionSeparator)[1]
-  if (decimals.length !== decimalsLength) throw new Error(`Invalid amount - Two decimals required`)
-
-  return formattedAmount
-}
-
-function unformatAmount(validatedAmount, fractionSeparator) {
-  return validatedAmount.replace(fractionSeparator, '')
-}
-
 require('dotenv').config({ path: __dirname + '/.env' })
 const puppeteer = require('puppeteer')
-const { getPageUtils } = require('../utils')
+const { getPageUtils } = require('../../utils')
+const { getClient, fetchMessage, trashMessage } = require('../../utils/gmail')
 
 const debug = false // when true shows logs and the actions in the browser
 const iPhone = puppeteer.devices['iPhone 6']
 
-;(async () => {
+module.exports = async (config) => {
   // Pago movil config
   const fractionSeparator = process.env.AMOUNT_FRACTION_SEPARATOR
   const decimalsLength = Number(process.env.AMOUNT_DECIMALS_LENGTH)
@@ -95,9 +74,7 @@ const iPhone = puppeteer.devices['iPhone 6']
   await nextStepButton.click()
   console.log(`-> Next step button clicked`)
 
-  if (amount > amountLimit) {
-    return console.log(`-> ACTION REQUIRED - The amount exceeds the automation limit`)
-  }
+  if (amount > amountLimit) return console.log(`-> ACTION REQUIRED - The amount exceeds the automation limit`)
 
   // Verify Pago Movil data
   // Verificar los datos que muestra la web para confirmar la transaccion con los que recibo del .env
@@ -124,5 +101,5 @@ const iPhone = puppeteer.devices['iPhone 6']
   // ELSE
 
   // paro la ejecucion sin cerrar el browser para ver que paso
-  if (!debug) await browser.close()
-})()
+  // if (!debug) await browser.close()
+}

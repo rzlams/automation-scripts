@@ -1,0 +1,57 @@
+{
+  "config": {
+    "amountFractionSeparator": ",",
+    "AmountDecimalLength": 2,
+    "amountLimit": 25
+  },
+  "banks": {
+    "bancaribe": {
+      "loginUrl": "https://www5.bancaribe.com.ve/bcm/",
+      "usernameId": "#username-bancaribe",
+      "passwordId": "#password-bancaribe",
+      "docTypeList": [
+        { "value": "V", "label": "Venezolano" },
+        { "value": "E", "label": "Extranjero" },
+        { "value": "P", "label": "Pasaporte" },
+        { "value": "J", "label": "Jurídico" },
+        { "value": "C", "label": "Consejos Comunales" },
+        { "value": "G", "label": "Gobierno" },
+        { "value": "R", "label": "Firma Personal" }
+      ],
+      "bankList": [
+        { "value": "0156", "label": "100 X 100 BANCO" },
+        { "value": "0172", "label": "BANCAMIGA" },
+        { "value": "0171", "label": "BANCO ACTIVO" },
+        { "value": "0166", "label": "BANCO AGRICOLA" },
+        { "value": "0128", "label": "BANCO CARONI" },
+        { "value": "0102", "label": "BANCO DE VENEZUELA" },
+        { "value": "0114", "label": "BANCO DEL CARIBE" },
+        { "value": "0157", "label": "BANCO DEL SUR" },
+        { "value": "0163", "label": "BANCO DEL TESORO" },
+        { "value": "0115", "label": "BANCO EXTERIOR" },
+        { "value": "0105", "label": "BANCO MERCANTIL" },
+        { "value": "0138", "label": "BANCO PLAZA" },
+        { "value": "0108", "label": "BANCO PROVINCIAL" },
+        { "value": "0168", "label": "BANCRECER" },
+        { "value": "0134", "label": "BANESCO" },
+        { "value": "0177", "label": "BANFANB" },
+        { "value": "0146", "label": "BANGENTE" },
+        { "value": "0174", "label": "BANPLUS" },
+        { "value": "0151", "label": "BFC" },
+        { "value": "0007", "label": "BICENTENARIO" },
+        { "value": "0116", "label": "BOD" },
+        { "value": "0169", "label": "MI BANCO" },
+        { "value": "0191", "label": "NACIONAL DE CREDITO" },
+        { "value": "0137", "label": "SOFITASA" },
+        { "value": "0104", "label": "VENEZOLANO DE CREDITO" }
+      ]
+    },
+    "banesco": {
+      "loginUrl": "https://www5.bancaribe.com.ve/bcm/",
+      "usernameId": "#username-banesco",
+      "passwordId": "#password-banesco",
+      "docTypeList": [],
+      "bankList": []
+    }
+  }
+}

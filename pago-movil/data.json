@@ -1,14 +1,20 @@
 {
   "config": {
-    "amountFractionSeparator": ",",
-    "AmountDecimalLength": 2,
     "amountLimit": 25
   },
   "banks": {
     "bancaribe": {
-      "loginUrl": "https://www5.bancaribe.com.ve/bcm/",
-      "usernameId": "#username-bancaribe",
-      "passwordId": "#password-bancaribe",
+      "config": {
+        "amountFractionSeparator": ",",
+        "amountDecimalLength": 2,
+        "loginUrl": "https://www5.bancaribe.com.ve/bcm/",
+        "usernameId": "#username-bancaribe",
+        "passwordId": "#password-bancaribe",
+        "emailFrom": "conexion.bancaribe@bancaribe.com.ve",
+        "emailSubject": "Clave de Operaciones Especiales",
+        "fetchAttemptsLimit": "9",
+        "secondsBetweenFetchAttempts": "10"
+      },
       "docTypeList": [
         { "value": "V", "label": "Venezolano" },
         { "value": "E", "label": "Extranjero" },
@@ -47,9 +53,17 @@
       ]
     },
     "banesco": {
-      "loginUrl": "https://www5.bancaribe.com.ve/bcm/",
-      "usernameId": "#username-banesco",
-      "passwordId": "#password-banesco",
+      "config": {
+        "amountFractionSeparator": ",",
+        "amountDecimalLength": 2,
+        "loginUrl": "https://www5.bancaribe.com.ve/bcm/",
+        "usernameId": "#username-banesco",
+        "passwordId": "#password-banesco",
+        "emailFrom": "conexion.bancaribe@bancaribe.com.ve",
+        "emailSubject": "Clave de Operaciones Especiales",
+        "fetchAttemptsLimit": "9",
+        "secondsBetweenFetchAttempts": "10"
+      },
       "docTypeList": [],
       "bankList": []
     }

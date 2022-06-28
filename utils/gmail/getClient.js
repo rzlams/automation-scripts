@@ -11,31 +11,26 @@ module.exports = async (debug) => {
   const TOKEN_PATH = 'sessionData/token.json'
   const CREDENTIALS_PATH = 'sessionData/credentials.json'
 
-  try {
-    // Load client secrets from a local file.
-    const credentials = await readCredentials(CREDENTIALS_PATH)
-    if (debug) console.log(`-> Credentials successfully read: ${JSON.stringify(credentials, null, 2)}`)
+  // Load client secrets from a local file.
+  const credentials = await readCredentials(CREDENTIALS_PATH)
+  if (debug) console.log(`-> Credentials successfully read: ${JSON.stringify(credentials, null, 2)}`)
 
-    const { client_secret, client_id, redirect_uris } = credentials.web
-    const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
+  const { client_secret, client_id, redirect_uris } = credentials.web
+  const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0])
 
-    const currentSessionToken = await getCurrentSessionToken(TOKEN_PATH)
-    if (!currentSessionToken && debug) console.log(`-> No current session token found`)
+  const currentSessionToken = await getCurrentSessionToken(TOKEN_PATH)
+  if (!currentSessionToken && debug) console.log(`-> No current session token found`)
 
-    const sessionToken = await getNewSessionToken(currentSessionToken, oAuth2Client, SCOPES, TOKEN_PATH)
-    if (debug) console.log(`-> Session Token got`)
+  const sessionToken = await getNewSessionToken(currentSessionToken, oAuth2Client, SCOPES, TOKEN_PATH)
+  if (debug) console.log(`-> Session Token got`)
 
-    oAuth2Client.setCredentials(sessionToken)
-    if (debug) console.log(`-> oAuth2 credentials set`)
+  oAuth2Client.setCredentials(sessionToken)
+  if (debug) console.log(`-> oAuth2 credentials set`)
 
-    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client })
-    console.log(`-> gmail instance created`)
+  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client })
+  console.log(`-> gmail instance created`)
 
-    return { gmail, error: false }
-  } catch (error) {
-    console.log(error)
-    return { error: true }
-  }
+  return gmail
 }
 
 async function readCredentials(path) {
@@ -46,7 +41,7 @@ async function readCredentials(path) {
 
     return JSON.parse(credentials)
   } catch (error) {
-    throw new Error(`Error loading credentials file: ${JSON.stringify(error, null, 2)}`)
+    throw new Error(`Error loading gmail credentials file: ${JSON.stringify(error, null, 2)}`)
   }
 }
 
@@ -91,6 +86,6 @@ async function getNewSessionToken(currentSessionToken, oAuth2Client, scopes, tok
 
     return token
   } catch (error) {
-    throw new Error(`Error retrieving access token from oAuth: ${JSON.stringify(error, null, 2)}`)
+    throw new Error(`Error retrieving gmail access token from oAuth: ${JSON.stringify(error, null, 2)}`)
   }
 }

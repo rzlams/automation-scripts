@@ -1,6 +1,6 @@
 require('dotenv').config({ path: __dirname + '/.env' })
 const puppeteer = require('puppeteer')
-const { getPageUtils } = require('../../utils')
+const { getPageUtils } = require('../../utils/puppeteer')
 const { getClient, fetchMessage, trashMessage } = require('../../utils/gmail')
 
 const debug = false // when true shows logs and the actions in the browser
@@ -26,7 +26,7 @@ module.exports = async (config) => {
   // create browser
   const browser = await puppeteer.launch({ headless: amount <= amountLimit && !debug, ignoreHTTPSErrors: true })
   const page = await browser.newPage()
-  const { clearInput } = getPageUtils(page, debug)
+  const { clearInput, typeAndConfirm } = getPageUtils(page, debug)
   await page.emulate(iPhone)
   console.log(`-> New page created`)
 
@@ -36,7 +36,9 @@ module.exports = async (config) => {
 
   // login
   const usernameInput = await clearInput('input#userlogin')
-  await usernameInput.type(username)
+  // TODO: hacer un wrapper para .type como el clearInput pero que se asegure de que el input tiene el value que espero
+  // https://stackoverflow.com/questions/47407791/how-to-click-on-element-with-text-in-puppeteer
+  await typeAndConfirm(usernameInput, username)
   console.log(`-> Username input value set: ${username}`)
 
   const passwordInput = await clearInput('input#passwd')
@@ -103,3 +105,19 @@ module.exports = async (config) => {
   // paro la ejecucion sin cerrar el browser para ver que paso
   // if (!debug) await browser.close()
 }
+
+// const getClient = require('./getClient')
+// const fetchMessage = require('./fetchMessage')
+
+// ;(async () => {
+//   const gmail = await getClient()
+//   const bankConfig = {
+//     emailFrom: 'conexion.bancaribe@bancaribe.com.ve',
+//     emailSubject: 'Clave de Operaciones Especiales',
+//     fetchAttemptsLimit: '9',
+//     secondsBetweenFetchAttempts: '10',
+//   }
+
+//   const message = await fetchMessage(gmail, bankConfig)
+//   console.log(message)
+// })()

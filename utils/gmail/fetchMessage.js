@@ -1,12 +1,15 @@
-module.exports = async (gmail, bankConfig, fetchAttemptCounter = 1) => {
+const delay = require('../delay')
+
+module.exports = async (gmail, bankConfig) => {
   const { emailFrom, emailSubject, fetchAttemptsLimit, secondsBetweenFetchAttempts } = bankConfig
 
-  try {
+  return getConfirmationCodeAndTrashMessage()
+
+  async function getConfirmationCodeAndTrashMessage(fetchAttemptCounter = 1) {
     if (fetchAttemptCounter > fetchAttemptsLimit) return console.log(`-> ATTEMPTS LIMIT REACHED - No code message found`)
 
     console.log(`-> Waiting to fetch code message...`)
 
-    const delay = require('../delay')
     await delay(secondsBetweenFetchAttempts * 1000)
 
     console.log(`-> Fetch attempt: ${fetchAttemptCounter}`)
@@ -19,7 +22,7 @@ module.exports = async (gmail, bankConfig, fetchAttemptCounter = 1) => {
     if (list.data.resultSizeEstimate === 0) {
       console.log(`-> No messages found`)
       const newFetchAttemptCounter = fetchAttemptCounter + 1
-      return getConfirmationCodeAndTrashMessage(gmail, bankConfig, newFetchAttemptCounter)
+      return getConfirmationCodeAndTrashMessage(newFetchAttemptCounter)
     }
 
     console.log(`-> Messages listed: ${JSON.stringify(list.data.messages, null, 2)}`)
@@ -33,7 +36,5 @@ module.exports = async (gmail, bankConfig, fetchAttemptCounter = 1) => {
     })
 
     return message
-  } catch (error) {
-    console.log('The API returned an error: ' + error)
   }
 }

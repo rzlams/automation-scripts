@@ -34,7 +34,7 @@ module.exports = {
         for (let currentQuestionIndex = 0; currentQuestionIndex < questions.length; currentQuestionIndex += 1) {
           const q = questions[currentQuestionIndex]
 
-          const currentAnswer = await asyncQuestion(q.text)
+          const currentAnswer = await asyncQuestion(q.text(answers))
 
           if (!q.validAnswers || q.validAnswers.length === 0) isInvalidAnswer = false
           else isInvalidAnswer = q.validAnswers.every((vr) => vr !== currentAnswer)

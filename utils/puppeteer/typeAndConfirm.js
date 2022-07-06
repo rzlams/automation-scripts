@@ -1,5 +1,6 @@
-module.exports = async (element, value) => {
+module.exports = (getElementHandleProperty) => async (element, value) => {
   await element.type(value)
+  const elementValue = await getElementHandleProperty(element, 'value')
 
-  if (usernameInput.value !== username) throw new Error(`Value ${value} has not been set`)
+  if (elementValue !== value) throw new Error(`Value ${value} has not been set`)
 }

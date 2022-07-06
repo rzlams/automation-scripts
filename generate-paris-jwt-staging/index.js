@@ -1,6 +1,7 @@
 require('dotenv').config({ path: __dirname + '/.env' })
 const puppeteer = require('puppeteer')
-const { getPageUtils, delay } = require('../utils')
+const { delay } = require('../utils')
+const { getPageUtils } = require('../utils/puppeteer')
 
 const debug = false // when true shows logs and the actions in the browser
 const windowWidth = 1280

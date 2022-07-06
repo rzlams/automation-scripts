@@ -18,7 +18,7 @@ module.exports = {
         answer = await asyncQuestion(text)
 
         if (validAnswers.length === 0) isInvalidAnswer = false
-        else isInvalidAnswer = validAnswers.every((vr) => vr !== answer)
+        else isInvalidAnswer = validAnswers.every((vr) => String(vr) !== answer)
       } while (isInvalidAnswer)
 
       return answer
@@ -37,7 +37,7 @@ module.exports = {
           const currentAnswer = await asyncQuestion(q.text(answers))
 
           if (!q.validAnswers || q.validAnswers.length === 0) isInvalidAnswer = false
-          else isInvalidAnswer = q.validAnswers.every((vr) => vr !== currentAnswer)
+          else isInvalidAnswer = q.validAnswers.every((vr) => String(vr) !== currentAnswer)
 
           if (isInvalidAnswer) {
             answers.length = 0

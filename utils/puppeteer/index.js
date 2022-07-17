@@ -1,5 +1,5 @@
 const clearInput = require('./clearInput')
-const showLogs = require('./showLogs')
+const showDebugLogs = require('./showDebugLogs')
 const typeAndConfirm = require('./typeAndConfirm')
 
 const getElementHandleProperty = require('./getElementHandleProperty')
@@ -10,7 +10,7 @@ module.exports = {
   getAttribute: getElementHandleProperty,
 
   getPageUtils: (page, debug) => {
-    showLogs(page, debug)
+    showDebugLogs(page, debug)
 
     return {
       clearInput: clearInput(page),

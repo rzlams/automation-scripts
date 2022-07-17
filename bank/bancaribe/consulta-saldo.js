@@ -1,16 +1,19 @@
 const login = require('./login')
-const { delay } = require('../../utils')
 const { getAttribute } = require('../../utils/puppeteer')
 const { default: fullPageScreenshot } = require('puppeteer-full-page-screenshot')
 
 const consulta = async (bankConfig, debug) => {
   const page = await login(bankConfig, debug)
+  return
+  // esto podria ser una async function - await clickUntilDissapear(callback, selector)
+  const balanceDetailLinkSelector = 'div.btn.btn-default.instrbank'
+  const balanceDetailLink = await page.waitForSelector(balanceDetailLinkSelector)
+  let balanceDetailLinkIsVisible = true
+  do {
+    balanceDetailLinkIsVisible = await page.evaluate(evaluateLinkVisibility, balanceDetailLinkSelector)
 
-  // TODO: Buscar la forma de que haga click tantas veces como sea necesario hasta que pase a la siguiente pagina
-  await delay(5000)
-
-  const balanceDetailLink = await page.waitForSelector('div.btn.btn-default.instrbank')
-  await balanceDetailLink.click()
+    if (balanceDetailLinkIsVisible) await balanceDetailLink.click()
+  } while (balanceDetailLinkIsVisible)
 
   const balanceElement = await page.waitForSelector('#saldo_disponible')
   const balance = await getAttribute(balanceElement, 'innerText')
@@ -34,11 +37,15 @@ const consulta = async (bankConfig, debug) => {
   }
 }
 
+function evaluateLinkVisibility(selector) {
+  const element = document.querySelector(selector)
+  return !!element
+}
+
 function hideHeaderAndFooter({ headerSelector, footerSelector }) {
   const headerElement = document.querySelector(headerSelector)
   const footerElement = document.querySelector(footerSelector)
-  console.log(headerElement.style.display)
-  console.log(footerElement.style.display)
+
   headerElement.style.display = 'none'
   footerElement.style.display = 'none'
 }

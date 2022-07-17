@@ -14,4 +14,9 @@ module.exports = (page, debug) => {
       }
     })
   })
+
+  page.on('framenavigated', (frame) => {
+    const url = frame.url()
+    console.log('-> Navigate to: ', url)
+  })
 }

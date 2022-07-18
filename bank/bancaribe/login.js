@@ -38,9 +38,7 @@ module.exports = async (bankConfig, debug) => {
 
   if (hasError) {
     const loginError = await page.evaluate(getLoginErrorText)
-
     console.log(`-> Login error: ${loginError}`)
-
     if (!debug) await browser.close()
   } else {
     return page
@@ -60,6 +58,6 @@ async function loginResponseHasErrorHandler(response) {
 
     const hasError = text && text.includes('form_error')
 
-    return { resolve: () => hasError }
+    return hasError
   }
 }

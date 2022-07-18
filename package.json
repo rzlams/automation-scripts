@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pm": "cd $HOME/Desktop/ && unzip cuentas.zip && node $INIT_CWD/pago-movil/index.js && rm -rf cuentas.html",
+    "bank": "cd $HOME/Desktop/ && unzip cuentas.zip && node $INIT_CWD/bank/index.js && rm -rf cuentas.html",
     "test": "jest"
   },
   "keywords": [],

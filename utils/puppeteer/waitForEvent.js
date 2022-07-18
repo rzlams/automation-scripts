@@ -4,19 +4,12 @@ module.exports = (page, debug) => async (eventName, callback) => {
       try {
         const result = await callback(event)
 
-        if (result && typeof result.reject === 'function') {
-          const resultError = result.reject()
-          throw new Error(resultError)
-        }
+        if (result === undefined) return
 
-        if (result && typeof result.resolve === 'function') {
-          const resultValue = result.resolve()
+        if (debug) console.log(`-> ${eventName} eventListener result: ${result}`)
 
-          if (debug) console.log(`-> ${eventName} eventListener result: ${resultValue}`)
-
-          removeEventListener()
-          resolve(resultValue)
-        }
+        removeEventListener()
+        resolve(result)
       } catch (error) {
         if (debug) console.log(`-> ${eventName} eventListener error: ${error.message}`)
 

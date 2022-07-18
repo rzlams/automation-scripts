@@ -2,7 +2,7 @@ const fs = require('fs').promises
 const { parse } = require('node-html-parser')
 const readline = require('../utils/readlineAsync')
 
-const debug = false
+const debug = true
 const banksActions = {
   bancaribe: require('./bancaribe'),
   // banesco: require('./banesco')
@@ -93,16 +93,18 @@ const readCuentasFile = async (path) => {
       const getAccountBalance = selectedBankActions[selectedActionValue]
 
       const takeScreenshotOptions = { 1: 'SI', 2: 'NO' }
-      const selectedTakeScreenshot = await rl.question(
-        `\n1.- ${takeScreenshot['1']}\n2.- ${takeScreenshot['2']}\n-> Ingrese si desea tomar un screenshot: `,
-        Object.keys(takeScreenshot)
+      const takeScreenshotSelectedOption = await rl.question(
+        `\n1.- ${takeScreenshotOptions['1']}\n2.- ${takeScreenshotOptions['2']}\n-> Ingrese si desea tomar un screenshot: `,
+        Object.keys(takeScreenshotOptions)
       )
 
       // hago la consulta de saldo
       const bankConfig = {
         ...config,
         ...selectedBankConfig,
-        takeScreenshot: takeScreenshotOptions[selectedTakeScreenshot] === takeScreenshot['1'],
+        username,
+        password,
+        takeScreenshot: takeScreenshotOptions[takeScreenshotSelectedOption] === takeScreenshotOptions['1'],
         windowWidth: 1280,
         windowHeight: 720,
         pageIsMobile: false,
@@ -169,10 +171,10 @@ const readCuentasFile = async (path) => {
       }
 
       // pregunto si quiere screenshot del recibo o no
-      const takeScreenshot = { 1: 'SI', 2: 'NO' }
-      const selectedTakeScreenshot = await rl.question(
-        `\n1.- ${takeScreenshot['1']}\n2.- ${takeScreenshot['2']}\n-> Ingrese si desea tomar un screenshot del recibo: `,
-        Object.keys(takeScreenshot)
+      const takeScreenshotOptions = { 1: 'SI', 2: 'NO' }
+      const takeScreenshotSelectedOption = await rl.question(
+        `\n1.- ${takeScreenshotOptions['1']}\n2.- ${takeScreenshotOptions['2']}\n-> Ingrese si desea tomar un screenshot del recibo: `,
+        Object.keys(takeScreenshotOptions)
       )
       // FIN
     }
